@@ -4,10 +4,12 @@ from OpenGL.GLUT import *
 import sys
 
 def sumbu():
+    glBegin(GL_LINES)
     glVertex2f(-500.0,0.0)
     glVertex2f(500.0,0.0)
     glVertex2f(0.0,500.0)
     glVertex2f(0.0,-500.0)
+    glEnd()
 
 def start2d():
     glClearColor(0.0, 0.0, 0.0, 1.0)
@@ -17,7 +19,6 @@ def plotPoint2d():
     glClear(GL_COLOR_BUFFER_BIT)
     glColor3f(1.0,0.0,0.0)
     glPointSize(3.0)
-    glBegin(GL_LINES)
     sumbu()
     N = input("Masukan banyak titik : ")
     N = int(N)
@@ -34,14 +35,9 @@ def plotPoint2d():
         matrix[0][k] = x
         matrix[1][k] = y
         print(matrix)
-    
+    glBegin(GL_POLYGON)
     for l in range(N):
-        if (l != N-1):
-            glVertex2f(matrix[0][l], matrix[1][l])
-            glVertex2f(matrix[0][l+1], matrix[1][l+1])
-        elif (l == N-1):
-            glVertex2f(matrix[0][l], matrix[1][l])
-            glVertex2f(matrix[0][0], matrix[1][0])
+        glVertex2f(matrix[0][l], matrix[1][l])
     glEnd()
     glFlush()
     
@@ -65,6 +61,4 @@ Masukan input : """)
         start2d()
         glutDisplayFunc(plotPoint2d)
     glutMainLoop()
-
-
 main()
