@@ -23,6 +23,8 @@ Masukan perintah selanjutnya : """)
             rotate(cmd)
         elif (cmd[0] == "reflect"):
             reflect(cmd)
+        elif (cmd[0] == "shear"):
+
 def translate(cmd):
     dx = float(cmd[1])
     dy = float(cmd[2])
@@ -64,7 +66,14 @@ def reflect(cmd):
             matrix[1][i] = temp
     else:
         a, b = param[param.find("(")+1:param.find(")")].split(",")
-        
+        a = float(a)
+        b = float(b)
+        for i in range(N):
+            matrix[0][i] = 2*a - matrix[0][i]
+            matrix[1][i] = 2*b - matrix[1][i]
+
+def shear(cmd):
+    
 
 def sumbu():
     glBegin(GL_LINES)
