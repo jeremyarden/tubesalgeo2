@@ -73,6 +73,15 @@ def reflect(cmd):
             matrix[1][i] = 2*b - matrix[1][i]
 
 def shear(cmd):
+    k = float(cmd[2])
+    if (cmd[1] == "x"):
+        for i in range(N):
+            matrix[0][i] = matrix[0][i] + k * matrix[1][i]
+    else if (cmd[2] == "y"):
+        for i in range(N):
+            matrix[1][i] = matrix[0][i] * k + matrix[1][i]
+    
+def stretch(cmd):
     
 
 def sumbu():
