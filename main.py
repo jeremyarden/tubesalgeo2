@@ -6,6 +6,7 @@ import math
 
 global N
 global matrix
+global oriMatrix
 
 def transformasi():
         cmd = input(
@@ -24,8 +25,24 @@ Masukan perintah selanjutnya : """)
         elif (cmd[0] == "reflect"):
             reflect(cmd)
         elif (cmd[0] == "shear"):
+            shear(cmd)
+        elif (cmd[0] == "stretch"):
+            stretch(cmd)
+        elif (cmd[0] == "custom"):
+            custom(cmd)
+        elif (cmd[0] == "multiple"):
+            multiple(cmd)
+        elif (cmd[0] == "reset"):
+            reset()
+        elif (cmd[0] == "exit"):
+            sys.exit()
+
+        plotPoint2d()
 
 def translate(cmd):
+    global N
+    global matrix
+
     dx = float(cmd[1])
     dy = float(cmd[2])
     for i in range(N):
@@ -33,12 +50,18 @@ def translate(cmd):
         matrix[1][i] = matrix[1][i] + dy
 
 def dilate(cmd):
+    global N
+    global matrix
+
     k = float(cmd[1])
     for i in range(N):
         matrix[0][i] = matrix[0][i] * k
         matrix[1][i] = matrix[1][i] * k
 
 def rotate(cmd):
+    global N
+    global matrix
+
     deg = float(cmd[1])
     m = float(cmd[2])
     n = float(cmd[3])
@@ -47,6 +70,9 @@ def rotate(cmd):
         matrix[1][i] = ((sin(radians(deg)) * (matrix[0][i] - m)) + (cos(radians(deg)) * (matrix[1][i] - n))) + n
 
 def reflect(cmd):
+    global N
+    global matrix
+
     param = cmd[1]
     if (param == "x"):
         for i in range(N):
@@ -73,16 +99,73 @@ def reflect(cmd):
             matrix[1][i] = 2*b - matrix[1][i]
 
 def shear(cmd):
+    global N
+    global matrix
+
     k = float(cmd[2])
     if (cmd[1] == "x"):
         for i in range(N):
             matrix[0][i] = matrix[0][i] + k * matrix[1][i]
-    else if (cmd[2] == "y"):
+    elif (cmd[1] == "y"):
         for i in range(N):
             matrix[1][i] = matrix[0][i] * k + matrix[1][i]
     
 def stretch(cmd):
+    global N
+    global matrix
+
+    k = float(cmd[2])
+    if (cmd[1] == "x"):
+        for i in range(N):
+            matrix[0][i] = matrix[0][i] * k
+    elif (cmd[1] == "y"):
+        for i in range(N):
+            matrix[1][i] = matrix[1][i] * k
     
+def custom(cmd):
+    global N
+    global matrix
+
+    a = float(cmd[1])
+    b = float(cmd[2])
+    c = float(cmd[3])
+    d = float(cmd[4])
+    for i in range(N):
+        temp = matrix[0][i]
+        matrix[0][i] = (matrix[0][i] * a) + (matrix[1][i] * b)
+        matrix[1][i] = (temp * c) + (matrix[1][i] * d)
+    
+def multiple(cmd):
+    global N
+
+    n = int(cmd[2])
+    for i in range(N):
+        multiCmd = input()
+
+        if (multiCmd[0] == "translate"):
+            translate(multiCmd)
+        elif (multiCmd[0] == "dilate"):
+            dilate(multiCmd)
+        elif (multiCmd[0] == "rotate"):
+            rotate(multiCmd)
+        elif (multiCmd[0] == "reflect"):
+            reflect(multiCmd)
+        elif (multiCmd[0] == "shear"):
+            shear(multiCmd)
+        elif (multiCmd[0] == "stretch"):
+            stretch(multiCmd)
+        elif (multiCmd[0] == "custom"):
+            custom(multiCmd)
+
+        plotPoint2d()
+    
+def reset():
+    global N
+    global matrix
+
+    for i in range(N):
+        matrix[0][i] = oriMatrix[0][i]
+        matrix[1][i] = oriMatrix[1][i]
 
 def sumbu():
     glBegin(GL_LINES)
@@ -109,10 +192,10 @@ def plotPoint2d():
     for l in range(N):
         glVertex2f(matrix[0][l], matrix[1][l])
     glEnd()
-    glFLush()
+    glFlush()
 
 def list():
-    printf(
+    print(
 """
 translate <dx> <dy>   : menggeser nilai x dan y sebesar dx dan dy
 dilate <k>            : melakukan dilatasi objek dengan faktor scaling k
@@ -139,6 +222,7 @@ Masukan perintah selanjutnya : """)
 def main():
     global N
     global matrix
+    global oriMatrix
     
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB)
@@ -162,15 +246,18 @@ Masukan input : """)
             N = input("Masukan salah. Ulangi lagi : ")
             N = int(N)
         matrix = [[0 for i in range(N)] for j in range(2)]
+        oriMatrix = [[0 for i in range(N)] for j in range(2)]
         for k in range (N):
             point = input("Masukan titik dalam format x,y : ")
             x, y = point.split(",")
             x = float(int(x))
             y = float(int(y))
-            print(k)
             matrix[0][k] = x    
             matrix[1][k] = y
+            oriMatrix[0][k] = x
+            oriMatrix[1][k] = y
             print(matrix)
         glutDisplayFunc(plotPoint2d)
+        glutIdleFunc(transformasi)
     glutMainLoop()
 main()
