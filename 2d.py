@@ -1,6 +1,6 @@
 from OpenGL.GL import *
-from OpenGL.GLU import *
 from OpenGL.GLUT import *
+from OpenGL.GLU import *
 import time
 import math
 import transformasi2d as tf2d
@@ -9,7 +9,7 @@ import transformasi2d as tf2d
 global N
 global matrix
 global oriMatrix
-step = 2000
+step = 100
 
 def input2D():
     global N
@@ -92,40 +92,41 @@ def animator2d (cmd):
             elif transform == "rotate":
                 deg,x,y = param.split(" ")
                 degr = float(deg)/step
+                x = float(x)
+                y = float(y)
                 tf2d.Rotate2D(N,matrix,degr,x,y)
             elif transform == "stretch":
                 axis,k = param.split(" ")
                 k = pow(abs(float(k)),1/step)*(float(k)/abs(float(k)))
                 tf2d.Stretch2D(N,matrix,axis,k)
-        time.sleep(0.1)
-        plotPoint2d()
+            time.sleep(0.01)
+            plotPoint2d()
 
 def sumbu():
     glBegin(GL_LINES)
+    glColor3f(1.0,0.0,0.0)
     glVertex2f(-500.0,0.0)
     glVertex2f(500.0,0.0)
     glVertex2f(0.0,500.0)
     glVertex2f(0.0,-500.0)
     glEnd()
 
-def start2d():
-    glClearColor(0.0, 0.0, 0.0, 1.0)
-    glOrtho(-500,500,-500,500,0,1)
+def draw2d():
+    glBegin(GL_POLYGON)
+    glColor3f(1.0,0.0,0.0)
+    for l in range(N):
+        glVertex2f(matrix[0][l], matrix[1][l])
+    glEnd()
 
 def plotPoint2d():
     global N
     global matrix
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    glColor3f(1.0,0.0,0.0)
     glLoadIdentity()
-    start2d()
+    gluOrtho2D(-500,500,-500,500)
     sumbu()
-    
-    glBegin(GL_POLYGON)
-    for l in range(N):
-        glVertex2f(matrix[0][l], matrix[1][l])
-    glEnd()
+    draw2d()
     glutSwapBuffers()
 
 def main():
