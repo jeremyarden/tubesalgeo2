@@ -14,7 +14,7 @@ def transformasi():
 Ketik list untuk menampilkan daftar perintah yang bisa digunakan.
 Masukan perintah selanjutnya : """)
         cmd = cmd.split()
-        if (cmd == "list"):
+        if (cmd[0] == "list"):
             daftarList()
         elif (cmd[0] == "translate"):
             translate(cmd)
@@ -31,11 +31,32 @@ Masukan perintah selanjutnya : """)
         elif (cmd[0] == "custom"):
             custom(cmd)
         elif (cmd[0] == "multiple"):
-            multiple(cmd)
+            n = int(cmd[1])
+            for i in range(n):
+                cmd = input()
+                cmd = cmd.split()
+                if (cmd[0] == "translate"):
+                    translate(cmd)
+                elif (cmd[0] == "dilate"):
+                    dilate(cmd)
+                elif (cmd[0] == "rotate"):
+                    rotate(cmd)
+                elif (cmd[0] == "reflect"):
+                    reflect(cmd)
+                elif (cmd[0] == "shear"):
+                    shear(cmd)
+                elif (cmd[0] == "stretch"):
+                    stretch(cmd)
+                elif (cmd[0] == "custom"):
+                    custom(cmd)
+                
+                plotPoint2d()
         elif (cmd[0] == "reset"):
             reset()
         elif (cmd[0] == "exit"):
             sys.exit()
+        else:
+            print("Masukan salah.")
 
         plotPoint2d()
 
@@ -136,30 +157,6 @@ def custom(cmd):
         matrix[0][i] = (matrix[0][i] * a) + (matrix[1][i] * b)
         matrix[1][i] = (temp * c) + (matrix[1][i] * d)
     
-def multiple(cmd):
-    global N
-
-    n = int(cmd[1])
-    for i in range(N):
-        multiCmd = input()
-
-        if (multiCmd[0] == "translate"):
-            translate(multiCmd)
-        elif (multiCmd[0] == "dilate"):
-            dilate(multiCmd)
-        elif (multiCmd[0] == "rotate"):
-            rotate(multiCmd)
-        elif (multiCmd[0] == "reflect"):
-            reflect(multiCmd)
-        elif (multiCmd[0] == "shear"):
-            shear(multiCmd)
-        elif (multiCmd[0] == "stretch"):
-            stretch(multiCmd)
-        elif (multiCmd[0] == "custom"):
-            custom(multiCmd)
-
-        plotPoint2d()
-    
 def reset():
     global N
     global matrix
@@ -216,7 +213,8 @@ multiple <n>          : melakukan transformasi linier pada objek sebanyak n kali
 . . .
 . . . //input n
 reset                 : mengembalikan objek pada kondisi awal objek didefinisikan
-exit                  : keluar dari program """)
+exit                  : keluar dari program
+""")
 
 def main():
     global N
