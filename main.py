@@ -15,7 +15,7 @@ Ketik list untuk menampilkan daftar perintah yang bisa digunakan.
 Masukan perintah selanjutnya : """)
         cmd = cmd.split()
         if (cmd == "list"):
-            list()
+            daftarList()
         elif (cmd[0] == "translate"):
             translate(cmd)
         elif (cmd[0] == "dilate"):
@@ -66,8 +66,8 @@ def rotate(cmd):
     m = float(cmd[2])
     n = float(cmd[3])
     for i in range(N):
-        matrix[0][i] = ((cos(radians(deg)) * (matrix[0][i] - m)) - (sin(radians(deg)) * (matrix[1][i] - n))) + m
-        matrix[1][i] = ((sin(radians(deg)) * (matrix[0][i] - m)) + (cos(radians(deg)) * (matrix[1][i] - n))) + n
+        matrix[0][i] = ((math.cos(math.radians(deg)) * (matrix[0][i] - m)) - (math.sin(math.radians(deg)) * (matrix[1][i] - n))) + m
+        matrix[1][i] = ((math.sin(math.radians(deg)) * (matrix[0][i] - m)) + (math.cos(math.radians(deg)) * (matrix[1][i] - n))) + n
 
 def reflect(cmd):
     global N
@@ -138,7 +138,7 @@ def custom(cmd):
 def multiple(cmd):
     global N
 
-    n = int(cmd[2])
+    n = int(cmd[1])
     for i in range(N):
         multiCmd = input()
 
@@ -169,15 +169,15 @@ def reset():
 
 def sumbu():
     glBegin(GL_LINES)
-    glVertex2f(-500.0,0.0)
-    glVertex2f(500.0,0.0)
-    glVertex2f(0.0,500.0)
-    glVertex2f(0.0,-500.0)
+    glVertex2f(-1000.0,0.0)
+    glVertex2f(1000.0,0.0)
+    glVertex2f(0.0,1000.0)
+    glVertex2f(0.0,-1000.0)
     glEnd()
 
 def start2d():
     glClearColor(0.0, 0.0, 0.0, 1.0)
-    gluOrtho2D(-500.0,500.0,-500.0,500.0)
+    gluOrtho2D(-1000.0,1000.0,-1000.0,1000.0)
 
 def plotPoint2d():
     global N
@@ -194,7 +194,7 @@ def plotPoint2d():
     glEnd()
     glFlush()
 
-def list():
+def daftarList():
     print(
 """
 translate <dx> <dy>   : menggeser nilai x dan y sebesar dx dan dy
@@ -215,9 +215,7 @@ multiple <n>          : melakukan transformasi linier pada objek sebanyak n kali
 . . .
 . . . //input n
 reset                 : mengembalikan objek pada kondisi awal objek didefinisikan
-exit                  : keluar dari program
-
-Masukan perintah selanjutnya : """)
+exit                  : keluar dari program """)
 
 def main():
     global N
@@ -226,7 +224,7 @@ def main():
     
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB)
-    glutInitWindowSize(500,500)
+    glutInitWindowSize(1000,1000)
     glutInitWindowPosition(50,50)
     glutCreateWindow("Hasil jadi")
     type = input(
@@ -256,7 +254,6 @@ Masukan input : """)
             matrix[1][k] = y
             oriMatrix[0][k] = x
             oriMatrix[1][k] = y
-            print(matrix)
         glutDisplayFunc(plotPoint2d)
         glutIdleFunc(transformasi)
     glutMainLoop()
