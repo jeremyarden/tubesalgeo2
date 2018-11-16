@@ -71,7 +71,7 @@ def animator2d (cmd):
         for i in range(n):
             Fungsi = input("- ")
             listFungsi.append(Fungsi)
-        for f in Fungsi:
+        for f in listFungsi:
             animator2d(f)
             time.sleep(0.5) 
     else :
@@ -129,7 +129,7 @@ def plotPoint2d():
     draw2d()
     glutSwapBuffers()
 
-def main():
+def main2d():
     global N
     global matrix
     global oriMatrix
@@ -144,4 +144,4 @@ def main():
     glutIdleFunc(transformasi)                             # draw all the time
     glutMainLoop()
 
-main()
+main2d()
