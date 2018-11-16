@@ -1,8 +1,8 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
+from math import cos, sin, radians
 import sys
-import math
 
 global N
 global matrix
@@ -66,8 +66,9 @@ def rotate(cmd):
     m = float(cmd[2])
     n = float(cmd[3])
     for i in range(N):
-        matrix[0][i] = ((math.cos(math.radians(deg)) * (matrix[0][i] - m)) - (math.sin(math.radians(deg)) * (matrix[1][i] - n))) + m
-        matrix[1][i] = ((math.sin(math.radians(deg)) * (matrix[0][i] - m)) + (math.cos(math.radians(deg)) * (matrix[1][i] - n))) + n
+        temp = matrix[0][i]
+        matrix[0][i] = ((cos(radians(deg)) * (matrix[0][i] - m)) - (sin(radians(deg)) * (matrix[1][i] - n))) + m
+        matrix[1][i] = ((sin(radians(deg)) * (temp - m)) + (cos(radians(deg)) * (matrix[1][i] - n))) + n
 
 def reflect(cmd):
     global N
