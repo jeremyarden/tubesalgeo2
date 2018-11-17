@@ -10,7 +10,7 @@ width, height = 500, 500                               # window size
 anglePyramid = 0
 matrix =[]
 size = 1000.0
-step = 500
+step = 100
 
 def MatrixInit ():
     global matrix
@@ -147,17 +147,17 @@ def animator3d (cmd):
         for i in range(n):
             Fungsi = input("- ")
             listFungsi.append(Fungsi)
-        for F in Fungsi:
+        for F in listFungsi:
             animator3d(F)
             time.sleep(0.5) 
     else :
         for i in range(step):
             if transform == "translate":
                 dx,dy,dz = param.split(" ")
-                dx = float(dx)/step
-                dy = float(dy)/step
-                dz = float(dz)/step
-                tf3d.Translate3D(matrix,dx,dy,dz)
+                x = float(dx)/step
+                y = float(dy)/step
+                z = float(dz)/step
+                tf3d.Translate3D(matrix,x,y,z)
             elif transform == "dilate":
                 k = pow(float(param),1/step)
                 tf3d.Dilate3D(matrix,k)
