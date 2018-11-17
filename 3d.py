@@ -171,7 +171,7 @@ def animator3d (cmd):
                 tf3d.Rotation3D(matrix,axis,deg)
             elif transform == "stretch":
                 axis,k = param.split(" ")
-                k = float(k)/step
+                k = pow(abs(float(k)),1/step)*(float(k)/abs(float(k)))
                 tf3d.Stretch3D(matrix,axis,k)
             time.sleep(0.01)
             plotPoint3d()
