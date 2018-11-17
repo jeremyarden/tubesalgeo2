@@ -12,6 +12,10 @@ matrix =[]
 size = 1000.0
 step = 100
 
+global viewX
+global viewY
+global viewZ
+
 def MatrixInit ():
     global matrix
     for i in range(8):
@@ -94,6 +98,9 @@ def draw_cube():
 
 def transformasi():
     global matrix
+    global viewX
+    global viewY
+    global viewZ
     cmd = input(">> ")
     if cmd=="reset":
         for i in range(8):
@@ -115,6 +122,14 @@ def transformasi():
                         matrix[i][j] = 50.0
     elif cmd=="exit":
         exit()
+    elif cmd == "w":
+        viewZ += 50
+    elif cmd == "s":
+        viewZ += -50
+    elif cmd == "a":
+        viewX += 50
+    elif cmd == "d":
+        viewX += -50
     else:
         animator3d(cmd)
     plotPoint3d()
@@ -178,21 +193,31 @@ def animator3d (cmd):
 
 def plotPoint3d():                                            # ondraw is called all the time
     global matrix
+    global viewX
+    global viewY
+    global viewZ
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # clear the screen
     glLoadIdentity()                                   # reset position
     glOrtho(-1000,1000,-1000,1000,-2000,2000)
-    gluLookAt(0, 0, 0, -50.0, -75.0, -100.0, 0.0,1.0,0.0)
+    gluLookAt(viewX, viewY, viewZ, -50.0, -75.0, -100.0, 0.0,1.0,0.0)
     draw_cube()
     draw_axis()
     glutSwapBuffers()                                  # important for double buffering
 
 def main3d ():
+    global viewX
+    global viewY
+    global viewZ
+    
     glutInit()                                              # initialize glut
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
     glutInitWindowSize(width, height)                      # set window size
     glutInitWindowPosition(0, 0)                           # set window position
     window = glutCreateWindow("3D")                        # create window with title
+    viewX = 0;
+    viewY = 0;
+    viewZ = 0;
     glEnable(GL_DEPTH_TEST)                                # remove unseen faces
     MatrixInit()
     glutDisplayFunc(plotPoint3d)                           # set draw function callback
